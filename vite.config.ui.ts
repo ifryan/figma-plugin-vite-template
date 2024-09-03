@@ -8,17 +8,18 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), viteSingleFile()],
   // root: path.resolve("src/ui"),
   build: {
-    minify: mode === "production",
+    minify: mode === 'production' ? 'terser' : false,
     cssMinify: mode === "production",
     sourcemap: mode !== "production" ? "inline" : false,
     emptyOutDir: false,
     outDir: path.resolve("dist"),
     // 配置 Terser 去除 console 语句
-    terserOptions: mode === 'production' ? {
+    terserOptions: {
       compress: {
-        drop_console: true // 去除所有 console.* 语句
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production'
       }
-    } : {},
+    },
     rollupOptions: {
       input: path.resolve(__dirname, "./index.html"),
     },
